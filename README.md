@@ -38,6 +38,7 @@ To get started using Axios Redux Wrapper, all you gotta do is:
 There is no need for this `connect(null, {getTodos})(App)`, you can just call it, let's say
 
 ```jsx
+// Using React Hooks
 const fetchTodos = async () => {
   try {
     getTodos();
@@ -48,7 +49,8 @@ const fetchTodos = async () => {
 useEffect(() => {
   fetchTodos()
 })
-//or
+
+// or using Class Components
 componentDidMount(){
   this.fetchTodos();
 }
@@ -94,17 +96,17 @@ import { store } from './index'
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 axios.interceptors.request.use((config) => {
-  dispatcher('request', { config }, Actions)
+  dispatcher('request', { config })
   return config
 })
 
 axios.interceptors.response.use(
   (data) => {
-    dispatcher('success', data, Actions)
+    dispatcher('success', data)
     return data
   },
   (error) => {
-    dispatcher('error', error, Actions)
+    dispatcher('error', error)
     return Promise.reject(error)
   }
 )
