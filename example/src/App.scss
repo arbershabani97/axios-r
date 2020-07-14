@@ -1,0 +1,71 @@
+body {
+	color: #212529;
+	font-weight: 400;
+	font-size: 1rem;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+	line-height: 1.5;
+	text-align: left;
+}
+p {
+	margin-top: 0;
+}
+button {
+	outline: 0;
+
+	cursor: pointer;
+}
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin-bottom: 0.5rem;
+
+	font-weight: 500;
+	line-height: 1.2;
+}
+.h1,
+h1 {
+	font-size: 2.25rem;
+}
+.h2,
+h2 {
+	font-size: 2rem;
+}
+.h3,
+h3 {
+	font-size: 1.75rem;
+}
+.h4,
+h4 {
+	font-size: 1.5rem;
+}
+.h5,
+h5 {
+	font-size: 1.25rem;
+}
+.h6,
+h6 {
+	font-size: 1rem;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+	margin: 0;
+
+	font-size: inherit;
+	font-family: inherit;
+	line-height: inherit;
+}
+.tab-pane:not(.active) {
+	display: none;
+}

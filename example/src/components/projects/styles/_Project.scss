@@ -1,0 +1,41 @@
+._Project {
+	width: 220px;
+
+	min-width: 220px;
+
+	margin-bottom: 10px;
+	p {
+		font-size: 16px;
+		span {
+			font-weight: 600;
+		}
+	}
+	div {
+		display: flex;
+		button[tab='show'] {
+			&:hover {
+				background: rgba(0, 0, 0, 0.08);
+			}
+		}
+		button[tab='edit'] {
+			margin-right: 5px;
+
+			margin-left: auto;
+
+			color: #f8f9fa;
+
+			background: #17a2b8;
+			&:hover {
+				background: rgba(#17a2b8, 0.9);
+			}
+		}
+		button[tab='delete'] {
+			color: #f8f9fa;
+
+			background: #dc3545;
+			&:hover {
+				background: rgba(#dc3545, 0.9);
+			}
+		}
+	}
+}

@@ -1,0 +1,9 @@
+.ListProjects {
+	display: flex;
+
+	flex-wrap: wrap;
+
+	> *:not(:last-of-type) {
+		margin-right: 15px;
+	}
+}

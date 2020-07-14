@@ -1,7 +1,17 @@
-import './index.css'
-
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App'
+import { Provider } from 'react-redux'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+import App from './App'
+import './store/axios.config'
+import * as serviceWorker from './serviceWorker'
+import { store } from './store'
+
+serviceWorker.register()
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.querySelector('#root')
+)

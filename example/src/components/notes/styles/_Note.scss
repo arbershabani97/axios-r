@@ -1,0 +1,48 @@
+._Note {
+	display: flex;
+	flex-direction: row !important;
+	align-items: center;
+	width: 100%;
+
+	// min-width: 220px;
+
+	margin-bottom: 3px;
+	padding: 0 !important;
+	border: 0 !important;
+	p {
+		margin-bottom: 0;
+
+		font-size: 16px;
+		span {
+			font-weight: 600;
+		}
+	}
+	div {
+		display: flex;
+		button[tab='show'] {
+			&:hover {
+				background: rgba(0, 0, 0, 0.08);
+			}
+		}
+		button[tab='edit'] {
+			margin-right: 5px;
+
+			margin-left: auto;
+
+			color: #f8f9fa;
+
+			background: #17a2b8;
+			&:hover {
+				background: rgba(#17a2b8, 0.9);
+			}
+		}
+		button[tab='delete'] {
+			color: #f8f9fa;
+
+			background: #dc3545;
+			&:hover {
+				background: rgba(#dc3545, 0.9);
+			}
+		}
+	}
+}

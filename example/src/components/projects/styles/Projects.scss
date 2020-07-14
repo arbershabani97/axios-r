@@ -1,0 +1,75 @@
+.Projects {
+	margin: 10px;
+	.header {
+		display: flex;
+		margin-bottom: 15px;
+		button {
+			padding: 5px 10px;
+
+			border: 1px solid rgba(0, 0, 0, 0.02);
+			border-radius: 0;
+
+			background: rgba(0, 0, 0, 0.1);
+			&:first-of-type {
+				border-radius: 3px 0 0 3px;
+			}
+			&:last-of-type {
+				border-radius: 0 3px 3px 0;
+			}
+			&.active {
+				background: rgba(0, 0, 0, 0.2);
+				&:hover {
+					background: rgba(0, 0, 0, 0.18);
+				}
+			}
+			&:hover {
+				background: rgba(0, 0, 0, 0.12);
+			}
+		}
+	}
+	button {
+		padding: 4px 8px;
+		border: 0;
+
+		border-radius: 3px;
+	}
+	form {
+		display: flex;
+
+		flex-direction: column;
+		width: 220px;
+		button[type='submit'] {
+			align-self: flex-end;
+
+			border: 0;
+
+			border-radius: 3px;
+
+			color: #f8f9fa;
+
+			background-color: #0062cc;
+			&:hover {
+				background: rgba(#0062cc, 0.9);
+			}
+			&:disabled {
+				background: rgba(#0062cc, 0.6);
+			}
+		}
+	}
+	.box {
+		display: flex;
+		flex-direction: column;
+		padding: 10px 16px;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		border-radius: 10px;
+		div {
+			margin-top: auto;
+		}
+	}
+	p {
+		font-size: 16px;
+		span {
+			font-weight: 600;
+		}
+	}
+}

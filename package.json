@@ -1,6 +1,6 @@
 {
   "name": "axios-r",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "Axios Redux Wrapper",
   "author": "arbershabani97",
   "license": "MIT",
@@ -49,5 +49,11 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "lodash.camelcase": "^4.3.0",
+    "lodash.foreach": "^4.5.0",
+    "lodash.isarray": "^4.0.0",
+    "lodash.isplainobject": "^4.0.6"
+  }
 }
