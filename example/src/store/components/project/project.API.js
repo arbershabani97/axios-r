@@ -1,13 +1,7 @@
-import { axiosR, generateId } from 'axios-r'
+import { axiosR } from 'axios-r'
 
-let requestId = 1
-
-const getProject = (id) =>
-  axiosR(
-    'project',
-    generateId(requestId++),
-    'get',
-    `https://jsonplaceholder.typicode.com/posts/${id}`
-  )
+const getProject = (id) => {
+  return axiosR('project', 'get').get('/posts/' + id, null, true)
+}
 
 export { getProject }

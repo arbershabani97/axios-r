@@ -6,6 +6,7 @@ import { store } from './index'
 
 // Set Axios Defaults
 axios.defaults.headers.post['Content-Type'] = 'application/json'
+axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com'
 
 axios.interceptors.request.use((config) => {
   dispatcher('request', { config })

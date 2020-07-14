@@ -1,7 +1,7 @@
-import { axiosR, generateId } from 'axios-r'
-let requestId = 1
+import { axiosR } from 'axios-r'
 
-const getNote = (id) =>
-  axiosR('note', generateId(requestId++), 'get', `/notes/${id}`)
+const getNote = (id) => {
+  return axiosR('note', 'get').get('/posts/' + id, null, true)
+}
 
 export { getNote }

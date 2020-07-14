@@ -12,20 +12,18 @@ npm install --save axios-r
 
 ## Usage
 
-Axios Redux Wrapper handles the redux action call (even if request fails and retries). This library solves the problem of updating the token, and still updating the redux state (after token expiration, - meaning if you save requests in queue till the token is updated).
+Axios Redux Wrapper handles redux actions (even if request fails and retries). This library solves the issue of updating token, and updating reducers after the queued request execution (after token expiration, - meaning if you save requests in queue till the token is updated).
+Also this handles etag caching by simply adding true at the end of the request axiosReq(action, reducer).get(url, {}, true)
+Warning -> Etag caching has not been tested yet thoroughly, so it may not work as expected (I'll test it out as soon as I can and fix it with the next release)
 
 ```
 Ex. We're getting todos
 
-Request -> 401 -> Error (getTodos)
---- getTodos request gets saved in axios requests queue
+Request -> 401 -> Error (getTodos) --- getTodos request gets saved in axios requests queue
 
-Request -> 200 -> Success (token)
+Request -> 200 -> Success (token) --- then axios requests queue continues
 
---- axios requests queue continues
-Request -> 200 -> Success (getTodos) -> redux action is called
-
-
+Request -> 200 -> Success (getTodos) --> redux action is called and reducer is updated
 ```
 
 To get started using Axios Redux Wrapper, all you gotta do is:
@@ -41,26 +39,14 @@ There is no need for this `connect(null, {getTodos})(App)`, you can just call it
 // Using React Hooks
 const fetchTodos = async () => {
   try {
-    getTodos();
+    getTodos()
   } catch (e) {
-    console.error(e);
+    console.error(e)
   }
 }
 useEffect(() => {
   fetchTodos()
 })
-
-// or using Class Components
-componentDidMount(){
-  this.fetchTodos();
-}
-fetchTodos = async () => {
-  try {
-    getTodos();
-  } catch (e) {
-    console.error(e);
-  }
-}
 ```
 
 #### index.js
@@ -94,6 +80,7 @@ import { store } from './index'
 
 // Set Axios Defaults
 axios.defaults.headers.post['Content-Type'] = 'application/json'
+axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com' // Random sample API url
 
 axios.interceptors.request.use((config) => {
   dispatcher('request', { config })
@@ -116,37 +103,31 @@ axiosRInit(axios, store, Actions)
 #### projects.API.js
 
 ```jsx
-import { axiosR, generateId } from 'axios-r'
+import { axiosR } from 'axios-r'
 
-let requestId = 1
-const requestData = () => ['projects', generateId(requestId++)] // Reducer and Generated Id
+// Reducer and Action Name
+const reducer = 'projects'
 
-const url = 'https://jsonplaceholder.typicode.com/posts'
-
-const getProjects = (params = null, update) =>
-  axiosR(...requestData(), 'get', url, null, params, null, update)
+const getProjects = (params = null, update) => {
+  const action = update ? 'getUpdate' : 'get'
+  return axiosR(reducer, action).get('/posts', { params }, true)
+}
 ```
 
-##### for a better understanding of how projects.API.js works
+##### for a better understanding of how axiosR works
 
 ```jsx
+axiosR(reducer, action).get(url, { params, headers }, ETag)
 
-import {axiosR, generateId} from 'axios-r'
+reducer -
+  'The action & reducer name (action name in Actions.js, which is imported in axios.config.js)'
+action -
+  'The action call name - exported in src/store/components/projects/projects.actions.js'
 
-let requestId = 1
-
-const reducer = "todos"; // Reducer Name
-const todoReqId = generateId(requestId++): // Request Id (help identify things)
-const type = "get"; // Request Type
-const url = 'https://jsonplaceholder.typicode.com/posts'; // Request Url
-const data = null; // Request Data
-const params = {params:{page:1}}; // Request Params
-const headers = null; // Request Headers
-const update = false // (false - infinite scroll, true - finite pagination)
-
-const getTodos = () => axiosR(reducer, todoReqId, type, url, data, params, headers, update);
-
-export {getTodos}
+    .get(url, { params: {}, headers }, ETag) // where if etag is true, it checks the reducer etag and updates it
+    .post(url, data, headers)
+    .put(url, data, headers)
+    .delete(url)
 ```
 
 ## License

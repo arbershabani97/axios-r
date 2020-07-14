@@ -2,7 +2,7 @@
 const _dispatcher = (Actions) => {
   return (status, data) => {
     const { method } = data.config
-    const { reducer, requestId, update } = data.config
+    const { reducer, action, requestId } = data.config
       ? data.config.headers
       : {}
 
@@ -19,32 +19,32 @@ const _dispatcher = (Actions) => {
       case 'get':
         if (status === 'success') {
           if (reducer.endsWith('s')) {
-            const getMethod = update ? 'getUpdate' : 'get'
-            instance[getMethod]({
+            instance[action]({
               payload: data.data,
               status,
               etag: data.headers.etag
             })
           } else {
-            instance.get(data.data.data || data.data)
+            instance[action](data.data.data || data.data)
           }
         }
         break
 
       case 'post':
         if (status === 'success') payload = data.data.data
-        if (data.config.data) instance[method]({ payload, status, requestId })
+        if (data.config.data) instance[action]({ payload, status, requestId })
         break
 
       case 'put':
         const singleInstance = Actions[reducer.slice(0, -1)]
 
-        if (status === 'success' && singleInstance) singleInstance.get(payload)
-        if (payload) instance[method]({ payload, status, requestId })
+        if (status === 'success' && singleInstance)
+          singleInstance[action](payload)
+        if (payload) instance[action]({ payload, status, requestId })
         break
 
       case 'delete':
-        instance[method]({
+        instance[action]({
           payload: { id: Number(data.config.url.split('/').slice(-1)[0]) },
           status,
           requestId
