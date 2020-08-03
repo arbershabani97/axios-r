@@ -1,12 +1,13 @@
 import generateId from './generateId'
 export default (axios, store) => {
   // eslint-disable-next-line max-statements, max-params
-  const axiosWrapper = (reducer, action, requestId, ETag) => {
+  const axiosWrapper = (reducer, action, extras, requestId, ETag) => {
     const instance = axios.create()
     if (requestId) instance.defaults.headers.requestId = requestId
     if (reducer && action) {
       instance.defaults.headers.reducer = reducer
       instance.defaults.headers.action = action
+      instance.defaults.headers.extras = extras
       if (ETag) {
         const { etag } = store.getState()[reducer]
         if (etag) instance.defaults.headers.ETag = etag
@@ -19,13 +20,13 @@ export default (axios, store) => {
   }
   let request = 0
   // eslint-disable-next-line max-params, consistent-return
-  const axiosReq = (reducer, action) => {
+  const axiosReq = (reducer, action, extras) => {
     return {
       // data -> {params: {text:"hello"}, headers:{}}
       get: async (url, data = {}, ETag) => {
         const requestId = generateId(request++)
         try {
-          return await axiosWrapper(reducer, action, requestId, ETag).get(
+          return await axiosWrapper(reducer, action, extras, requestId, ETag).get(
             url,
             data
           )
@@ -37,7 +38,7 @@ export default (axios, store) => {
       post: async (url, data, headers) => {
         const requestId = generateId(request++)
         try {
-          return await axiosWrapper(reducer, action, requestId).post(
+          return await axiosWrapper(reducer, action, extras, requestId).post(
             url,
             data,
             headers
@@ -50,7 +51,7 @@ export default (axios, store) => {
       put: async (url, data, headers) => {
         const requestId = generateId(request++)
         try {
-          return await axiosWrapper(reducer, action, requestId).put(
+          return await axiosWrapper(reducer, action, extras, requestId).put(
             url,
             data,
             headers
@@ -63,7 +64,7 @@ export default (axios, store) => {
       delete: async (url) => {
         const requestId = generateId(request++)
         try {
-          return await axiosWrapper(reducer, action, requestId).delete(url)
+          return await axiosWrapper(reducer, action, extras, requestId).delete(url)
         } catch (error) {
           return Promise.reject(error)
         }
