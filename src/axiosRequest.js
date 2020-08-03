@@ -20,7 +20,7 @@ export default (axios, store) => {
   }
   let request = 0
   // eslint-disable-next-line max-params, consistent-return
-  const axiosReq = (reducer, action, extras) => {
+  const axiosReq = (reducer, action, extras = {}) => {
     return {
       // data -> {params: {text:"hello"}, headers:{}}
       get: async (url, data = {}, ETag) => {
