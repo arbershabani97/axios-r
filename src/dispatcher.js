@@ -2,7 +2,7 @@
 const _dispatcher = (Actions) => {
   return (status, data) => {
     const { method } = data.config
-    const { reducer, action, extras, requestId } = data.config
+    const { reducer, action, extras = null, requestId } = data.config
       ? data.config.headers
       : {}
 
@@ -26,21 +26,22 @@ const _dispatcher = (Actions) => {
               extras
             })
           } else {
-            instance[action]({payload: data.data.data || data.data, extras})
+            instance[action]({ payload: data.data.data || data.data, extras })
           }
         }
         break
 
       case 'post':
         if (status === 'success') payload = data.data.data
-        if (data.config.data) instance[action]({ payload, status, requestId, extras })
+        if (data.config.data)
+          instance[action]({ payload, status, requestId, extras })
         break
 
       case 'put':
         const singleInstance = Actions[reducer.slice(0, -1)]
 
         if (status === 'success' && singleInstance)
-          singleInstance[action]({payload, extras})
+          singleInstance[action]({ payload, extras })
         if (payload) instance[action]({ payload, status, requestId, extras })
         break
 

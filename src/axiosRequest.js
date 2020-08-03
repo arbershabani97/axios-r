@@ -4,10 +4,10 @@ export default (axios, store) => {
   const axiosWrapper = (reducer, action, extras, requestId, ETag) => {
     const instance = axios.create()
     if (requestId) instance.defaults.headers.requestId = requestId
+    if (reducer) instance.defaults.headers.reducer = reducer
+    if (action) instance.defaults.headers.action = action
+    if (extras) instance.defaults.headers.extras = extras
     if (reducer && action) {
-      instance.defaults.headers.reducer = reducer
-      instance.defaults.headers.action = action
-      instance.defaults.headers.extras = extras
       if (ETag) {
         const { etag } = store.getState()[reducer]
         if (etag) instance.defaults.headers.ETag = etag
@@ -20,16 +20,19 @@ export default (axios, store) => {
   }
   let request = 0
   // eslint-disable-next-line max-params, consistent-return
-  const axiosReq = (reducer, action, extras = {}) => {
+  const axiosReq = (reducer, action, extras = null) => {
     return {
       // data -> {params: {text:"hello"}, headers:{}}
       get: async (url, data = {}, ETag) => {
         const requestId = generateId(request++)
         try {
-          return await axiosWrapper(reducer, action, extras, requestId, ETag).get(
-            url,
-            data
-          )
+          return await axiosWrapper(
+            reducer,
+            action,
+            extras,
+            requestId,
+            ETag
+          ).get(url, data)
         } catch (error) {
           return Promise.reject(error)
         }
@@ -64,7 +67,9 @@ export default (axios, store) => {
       delete: async (url) => {
         const requestId = generateId(request++)
         try {
-          return await axiosWrapper(reducer, action, extras, requestId).delete(url)
+          return await axiosWrapper(reducer, action, extras, requestId).delete(
+            url
+          )
         } catch (error) {
           return Promise.reject(error)
         }
