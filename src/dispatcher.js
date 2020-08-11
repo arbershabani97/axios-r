@@ -44,7 +44,7 @@ const _dispatcher = (Actions) => {
         const singleInstance = Actions[actionName]
 
         if (status === 'success' && singleInstance)
-          singleInstance['update' + capitalize(actionName)]({ payload, extras })
+          singleInstance['update' + capitalize(actionName)](payload)
         if (payload) instance[action]({ payload, status, requestId, extras })
         break
 
