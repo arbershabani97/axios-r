@@ -41,7 +41,7 @@ const _dispatcher = (Actions) => {
         const singleInstance = Actions[reducer.slice(0, -1)]
 
         if (status === 'success' && singleInstance)
-          singleInstance[action]({ payload, extras })
+          singleInstance['update' + reducer.slice(0, -1)]({ payload, extras })
         if (payload) instance[action]({ payload, status, requestId, extras })
         break
 
