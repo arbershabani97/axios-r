@@ -1,3 +1,5 @@
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1)
+
 /* eslint-disable no-case-declarations, max-statements */
 const _dispatcher = (Actions) => {
   return (status, data) => {
@@ -38,10 +40,11 @@ const _dispatcher = (Actions) => {
         break
 
       case 'put':
-        const singleInstance = Actions[reducer.slice(0, -1)]
+        const actionName = reducer.slice(0, -1)
+        const singleInstance = Actions[actionName]
 
         if (status === 'success' && singleInstance)
-          singleInstance['update' + reducer.slice(0, -1)]({ payload, extras })
+          singleInstance['update' + capitalize(actionName)]({ payload, extras })
         if (payload) instance[action]({ payload, status, requestId, extras })
         break
 
