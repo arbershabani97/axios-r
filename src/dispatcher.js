@@ -34,7 +34,7 @@ const _dispatcher = (Actions) => {
         break
 
       case 'post':
-        if (status === 'success') payload = data.data.data
+        if (status === 'success') payload = data.data.data || data.data
         if (data.config.data)
           instance[action]({ payload, status, requestId, extras })
         break
