@@ -43,6 +43,7 @@ const _dispatcher = (Actions) => {
         const actionName = reducer.slice(0, -1)
         const singleInstance = Actions[actionName]
 
+        if (status === 'success') payload = data.data.data || data.data
         if (status === 'success' && singleInstance)
           singleInstance['update' + capitalize(actionName)](payload)
         if (payload) instance[action]({ payload, status, requestId, extras })
