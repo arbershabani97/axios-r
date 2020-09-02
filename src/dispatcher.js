@@ -20,16 +20,12 @@ const _dispatcher = (Actions) => {
     switch (method) {
       case 'get':
         if (status === 'success') {
-          if (reducer.endsWith('s')) {
-            instance[action]({
-              payload: data.data,
-              status,
-              etag: data.headers.etag,
-              extras
-            })
-          } else {
-            instance[action]({ payload: data.data.data || data.data, extras })
-          }
+          instance[action]({
+            payload: data.data.data || data.data,
+            status,
+            etag: data.headers.etag,
+            extras
+          })
         }
         break
 
