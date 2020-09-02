@@ -10,7 +10,7 @@ export default (axios, store) => {
     if (reducer && action) {
       if (ETag) {
         const { etag } = store.getState()[reducer]
-        if (etag) instance.defaults.headers.ETag = etag
+        if (etag) instance.defaults.headers['If-None-Match'] = etag
       }
     }
     instance.interceptors.request = axios.interceptors.request
