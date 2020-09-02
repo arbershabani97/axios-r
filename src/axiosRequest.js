@@ -4,7 +4,10 @@ export default (axios, store) => {
   const axiosWrapper = (reducer, action, extras, requestId, ETag) => {
     const instance = axios.create()
     if (requestId) instance.defaults.headers.requestId = requestId
-    if (reducer) instance.defaults.headers.reducer = reducer
+    if (reducer)
+      instance.defaults.headers.reducer = reducer.includes('.')
+        ? reducer.split('.')[0]
+        : reducer
     if (action) instance.defaults.headers.action = action
     if (extras) instance.defaults.headers.extras = extras
     if (reducer && action) {
