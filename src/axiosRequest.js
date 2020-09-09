@@ -14,10 +14,10 @@ export default (axios, store) => {
       if (ETag) {
         if (reducer.includes('.')) {
           const [stateReducer, child] = reducer.split('.')
-          const { etag } = store.getState()[stateReducer][child]
+          const { etag = null } = store.getState()[stateReducer]?.[child]
           if (etag) instance.defaults.headers['If-None-Match'] = etag
         } else {
-          const { etag } = store.getState()[reducer]
+          const { etag = null } = store.getState()[reducer]
           if (etag) instance.defaults.headers['If-None-Match'] = etag
         }
       }
