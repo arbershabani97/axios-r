@@ -1,4 +1,3 @@
-import FormData from 'form-data'
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1)
 
 /* eslint-disable no-case-declarations, max-statements */
@@ -13,12 +12,18 @@ const _dispatcher = (Actions) => {
     if (!instance) return
 
     const payloadData = data.config.data || null
-    let payload =
-      status === 'success' ||
-      // eslint-disable-next-line no-undef
-      Boolean(status === 'error' && !(payloadData instanceof FormData))
-        ? JSON.parse(payloadData)
-        : payloadData
+    let payload
+    if (status === 'success') {
+      payload = JSON.parse(payloadData)
+    } else if (status === 'error') {
+      if (data.config.data && Object.keys(data.config.data)?.[0] === '_parts') {
+        payload = payloadData
+      } else {
+        payload = JSON.parse(payloadData)
+      }
+    } else {
+      payload = payloadData
+    }
 
     switch (method) {
       case 'get':
