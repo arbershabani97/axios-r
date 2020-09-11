@@ -13,15 +13,13 @@ const _dispatcher = (Actions) => {
 
     const payloadData = data.config.data || null
     let payload
-    if (status === 'success') {
-      payload = JSON.parse(payloadData)
-    } else if (status === 'error') {
-      if (data.config.data && Object.keys(data.config.data)?.[0] === '_parts') {
-        payload = payloadData
-      } else {
-        payload = JSON.parse(payloadData)
-      }
-    } else {
+
+    try {
+      payload =
+        status === 'success' || status === 'error'
+          ? JSON.parse(payloadData)
+          : payloadData
+    } catch (error) {
       payload = payloadData
     }
 
