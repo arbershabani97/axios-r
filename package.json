@@ -1,6 +1,6 @@
 {
   "name": "axios-r",
-  "version": "2.0.78-beta",
+  "version": "2.0.79-beta",
   "description": "Axios Redux Wrapper",
   "author": "arbershabani97",
   "license": "MIT",
@@ -51,6 +51,7 @@
     "dist"
   ],
   "dependencies": {
+    "form-data": "^3.0.0",
     "lodash.camelcase": "^4.3.0",
     "lodash.foreach": "^4.5.0",
     "lodash.isarray": "^4.0.0",
