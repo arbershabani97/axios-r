@@ -13,7 +13,9 @@ const _dispatcher = (Actions) => {
 
     const payloadData = data.config.data || null
     let payload =
-      status === 'success' || status === 'error'
+      status === 'success' ||
+      // eslint-disable-next-line no-undef
+      (status === 'error' && !(payloadData instanceof FormData))
         ? JSON.parse(payloadData)
         : payloadData
 
