@@ -1,4 +1,4 @@
-import FormData from './formData'
+import FormData from 'form-data'
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1)
 
 /* eslint-disable no-case-declarations, max-statements */
