@@ -15,7 +15,7 @@ const _dispatcher = (Actions) => {
     let payload =
       status === 'success' ||
       // eslint-disable-next-line no-undef
-      (status === 'error' && !(payloadData instanceof FormData))
+      Boolean(status === 'error' && !(payloadData instanceof FormData))
         ? JSON.parse(payloadData)
         : payloadData
 
