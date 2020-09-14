@@ -27,7 +27,7 @@ const _dispatcher = (Actions) => {
       case 'get':
         if (status === 'success') {
           instance[action]({
-            payload: data.data.data || data.data,
+            payload: data.data,
             status,
             etag: data.headers.etag,
             extras
