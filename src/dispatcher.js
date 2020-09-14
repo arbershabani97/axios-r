@@ -12,16 +12,10 @@ const _dispatcher = (Actions) => {
     if (!instance) return
 
     const payloadData = data.config.data || null
-    let payload
-
-    try {
-      payload =
-        status === 'success' || status === 'error'
-          ? JSON.parse(payloadData)
-          : payloadData
-    } catch (error) {
-      payload = payloadData
-    }
+    let payload =
+      status === 'success' || status === 'error'
+        ? JSON.parse(payloadData)
+        : payloadData
 
     switch (method) {
       case 'get':
