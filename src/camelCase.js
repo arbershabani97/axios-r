@@ -1,6 +1,5 @@
 import forEach from 'lodash.foreach'
 import isPlainObject from 'lodash.isplainobject'
-import isArray from 'lodash.isarray'
 import camelCase from 'lodash.camelcase'
 
 // eslint-disable-next-line camelcase
@@ -8,17 +7,17 @@ const objectKeysToCamelCase = (snake_case_object) => {
   const camelCaseObject = {}
   const camelCaseArray = []
   forEach(snake_case_object, (value, key) => {
-    if (isPlainObject(value) || isArray(value)) {
+    if (isPlainObject(value) || Array.isArray(value)) {
       /*
        * checks that a value is a plain object or an array - for recursive key conversion
        * recursively update keys of any values that are also objects
        */
       value = objectKeysToCamelCase(value)
     }
-    if (isArray(snake_case_object)) camelCaseArray.push(value)
+    if (Array.isArray(snake_case_object)) camelCaseArray.push(value)
     else camelCaseObject[camelCase(key)] = value
   })
-  if (isArray(snake_case_object)) return camelCaseArray
+  if (Array.isArray(snake_case_object)) return camelCaseArray
   return camelCaseObject
 }
 
@@ -33,17 +32,17 @@ const objectKeysToSnakeCase = (camelCaseObject) => {
   const snake_case_object = {}
   const snakeCaseArray = []
   forEach(camelCaseObject, (value, key) => {
-    if (isPlainObject(value) || isArray(value)) {
+    if (isPlainObject(value) || Array.isArray(value)) {
       /*
        * checks that a value is a plain object or an array - for recursive key conversion
        * recursively update keys of any values that are also objects
        */
       value = objectKeysToSnakeCase(value)
     }
-    if (isArray(camelCaseObject)) snakeCaseArray.push(value)
+    if (Array.isArray(camelCaseObject)) snakeCaseArray.push(value)
     else snake_case_object[camelToUnderscore(key)] = value
   })
-  if (isArray(camelCaseObject)) return snakeCaseArray
+  if (Array.isArray(camelCaseObject)) return snakeCaseArray
 
   // eslint-disable-next-line camelcase
   return snake_case_object

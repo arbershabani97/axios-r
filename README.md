@@ -13,8 +13,7 @@ npm install --save axios-r
 ## Usage
 
 Axios Redux Wrapper handles redux actions (even if request fails and retries). This library solves the issue of updating token, and updating reducers after the queued request execution (after token expiration, - meaning if you save requests in queue till the token is updated).
-Also this handles etag caching by simply adding true at the end of the request axiosReq(action, reducer).get(url, {}, true)
-Warning -> Etag caching has not been tested yet thoroughly, so it may not work as expected (I'll test it out as soon as I can and fix it with the next release)
+Also this handles etag caching by simply adding true at the end of the request axiosReq(action, reducer).get(url, {}, true) -> check out the details and examples down below
 
 ```
 Ex. We're getting todos
@@ -39,7 +38,7 @@ There is no need for this `connect(null, {getTodos})(App)`, you can just call it
 // Using React Hooks
 const fetchTodos = async () => {
   try {
-    getTodos()
+    await getTodos();
   } catch (e) {
     console.error(e)
   }
@@ -83,18 +82,30 @@ axios.defaults.headers.post['Content-Type'] = 'application/json'
 axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com' // Random sample API url
 
 axios.interceptors.request.use((config) => {
-  dispatcher('request', { config })
-  return config
+  try {
+    dispatcher("request", {config});
+  } catch (error) {
+    return Promise.reject(error);
+  }
+  return config;
 })
 
 axios.interceptors.response.use(
   (data) => {
-    dispatcher('success', data)
-    return data
+    try {
+      dispatcher("success", data);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+    return data;
   },
   (error) => {
-    dispatcher('error', error)
-    return Promise.reject(error)
+    try {
+      dispatcher("error", error);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+    return Promise.reject(error);
   }
 )
 axiosRInit(axios, store, Actions)
@@ -108,13 +119,39 @@ import { axiosR } from 'axios-r'
 // Reducer and Action Name
 const reducer = 'projects'
 
-const getProjects = (params = null, update) => {
-  const action = update ? 'getUpdate' : 'get'
-  return axiosR(reducer, action).get('/posts', { params }, true)
+const getProjects = (params = null) => {
+  /**
+   * The parameters "projects" & "get" are used for taking
+   * the exported actions called in axios.config.js
+   * and out of all actions ex. {projects, tasks, notes}
+   * takes the projects, and accesses the get function exported in projects.action.js
+   * 
+   * The last parameter on the get request - 'true' is used to take the etag from projects reducer
+   * let's say projects reducer is => {list:{}, show:[], etag:'myetag'}
+   * and applying the header 'If-None-Match': 'myetag' to the request
+   **/
+  return axiosR("projects", "get").get('/posts', { params }, true)
 }
+const postProject = (data) => axiosR(reducer, "post").post('/posts', data);
+
+export {getProjects,postProject}
 ```
 
-##### for a better understanding of how axiosR works
+#### projects.action.js
+
+```jsx
+import { store } from '../..'
+import {GET_PROJECTS, POST_PROJECT} from '../../actionTypes'
+
+const {dispatch} = store;
+
+export default {
+	get: data => dispatch({type: GET_PROJECTS, ...data}),
+	post: data => dispatch({type: POST_PROJECT, ...data}),
+};
+```
+
+### For a better understanding of how axiosR works
 
 ```jsx
 axiosR(reducer, action).get(url, { params, headers }, ETag)
@@ -123,7 +160,7 @@ reducer -
   'The action & reducer name (action name in Actions.js, which is imported in axios.config.js)'
 action -
   'The action call name - exported in src/store/components/projects/projects.actions.js'
-
+functions - 
     .get(url, { params: {}, headers }, ETag) // where if etag is true, it checks the reducer etag and updates it
     .post(url, data, headers)
     .put(url, data, headers)
